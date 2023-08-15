@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\MeetHistory;
 
 class AdminMeetHistoryController extends Controller
 {
@@ -11,9 +12,32 @@ class AdminMeetHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $meetsHistoryQuery = MeetHistory::query();
+
+        // Check if the name search parameter is provided
+        $date = $request->query('date');
+        if ($date) {
+            // Apply the date filter to the query
+            $meetsHistoryQuery->whereDate('date_meet', $date);
+        }
+
+        // Paginate the categories
+        $meethistories = $meetsHistoryQuery->paginate(10);
+
+        // Get the requested page from the query string
+        $page = $request->query('page');
+
+        // Redirect to the first page if the requested page is not valid
+        if ($page && ($page < 1 || $page > $meethistories->lastPage())) {
+            return redirect()->route('meethistories.index');
+        }
+
+        $searchParam = $date ? $date : '';
+
+        // Return a view or JSON response as desired
+        return view('meethistories.index', compact('meethistories', 'searchParam'));
     }
 
     /**

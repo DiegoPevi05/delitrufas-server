@@ -13,7 +13,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     const ROLE_USER = 'USER';
-
     const ROLE_SPECIALIST = 'SPECIALIST';
     const ROLE_MODERATOR = 'MODERATOR';
     const ROLE_ADMIN = 'ADMIN';
@@ -50,4 +49,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function specialist()
+    {
+        return $this->hasOne(Specialist::class);
+    }
 }

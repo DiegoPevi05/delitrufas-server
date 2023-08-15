@@ -4,9 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Models\Specialist;
 
 class AdminServiceController extends Controller
 {
+
+    public function searchBySpecialist(Request $request){
+        $specialist_id = $request->input('specialist_id');
+        $specialist = Specialist::where('id',$specialist_id)->first();
+        $services_specialist = json_decode($specialist->services, true);
+
+
+        $serviceIds = []; // Initialize an empty array to store service IDs
+
+        foreach ($services_specialist as $service) {
+            if (isset($service['id_service'])) {
+                $serviceIds[] = $service['id_service']; // Add id_service to the array
+            }
+        }
+
+
+        $services = Service::whereIn('id',$serviceIds)
+                    ->where('is_active',true)
+                    ->select('id','name','options')
+                    ->get();
+
+
+        return response()->json($services);
+
+    }
+
+    public function searchByName(Request $request)
+    {
+        $name = strtolower($request->input('name')); // Convert input name to lowercase
+
+        $services = Service::whereRaw('LOWER(name) like ?', ["%$name%"])
+            ->where('is_active',true)
+            ->select('id', 'name','options')
+            ->limit(5)
+            ->get();
+
+
+        return response()->json($services);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -53,7 +93,7 @@ class AdminServiceController extends Controller
      */
     public function create()
     {
-        return view('services.create');
+        return view('services.create')->with('editMode', false);
     }
 
     /**
@@ -67,6 +107,7 @@ class AdminServiceController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:25',
             'options' => 'required|array|min:1',
+            'options.*.id' => 'required|numeric',
             'options.*.price' => 'required|numeric',
             'options.*.duration' => 'required|numeric',
             'is_active' => 'nullable',
@@ -76,6 +117,8 @@ class AdminServiceController extends Controller
             'options.required' => 'Debe proporcionar al menos una opción.',
             'options.array' => 'Las opciones deben ser un conjunto de objetos.',
             'options.min' => 'El nombre no debe ser minimo a 1.',
+            'options.*.id.required' => 'El id de la opción es obligatorio.',
+            'options.*.id.numeric' => 'El id de la opción debe ser numérico.',
             'options.*.price.required' => 'El precio de la opción es obligatorio.',
             'options.*.price.numeric' => 'El precio de la opción debe ser numérico.',
             'options.*.duration.required' => 'La duración de la opción es obligatoria.',
@@ -116,7 +159,7 @@ class AdminServiceController extends Controller
     public function edit(Service $service)
     {
         // Show the form for editing the specified Category
-        return view('services.edit', compact('service'));
+        return view('services.edit', compact('service'))->with('editMode', true);
     }
 
     /**
@@ -131,6 +174,7 @@ class AdminServiceController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:25',
             'options' => 'required|array|min:1',
+            'options.*.id' => 'required|numeric',
             'options.*.price' => 'required|numeric',
             'options.*.duration' => 'required|numeric',
             'is_active' => 'nullable',
@@ -140,6 +184,8 @@ class AdminServiceController extends Controller
             'options.required' => 'Debe proporcionar al menos una opción.',
             'options.array' => 'Las opciones deben ser un conjunto de objetos.',
             'options.min' => 'El nombre no debe ser minimo a 1.',
+            'options.*.id.required' => 'El id de la opción es obligatorio.',
+            'options.*.id.numeric' => 'El id de la opción debe ser numérico.',
             'options.*.price.required' => 'El precio de la opción es obligatorio.',
             'options.*.price.numeric' => 'El precio de la opción debe ser numérico.',
             'options.*.duration.required' => 'La duración de la opción es obligatoria.',

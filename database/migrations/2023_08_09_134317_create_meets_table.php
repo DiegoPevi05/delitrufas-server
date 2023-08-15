@@ -21,9 +21,12 @@ return new class extends Migration
             $table->foreign('specialist_id')->references('id')->on('specialists');
             $table->unsignedBigInteger('service_id')->nullable(false);
             $table->foreign('service_id')->references('id')->on('services');
-            $table->unsignedBigInteger('discount_code_id')->nullable(false);
+            $table->unsignedBigInteger('service_option_id')->nullable(false);
+            $table->integer('duration')->nullable(false);
+            $table->unsignedBigInteger('discount_code_id')->nullable();
             $table->foreign('discount_code_id')->references('id')->on('discount_codes');
-            $table->date('date_meet')->nullable(false);
+            $table->datetime('date_meet')->nullable(false);
+            $table->boolean('price_calculated')->nullable();
             $table->float('price')->nullable();
             $table->float('discount')->nullable();
             $table->float('discounted_price')->nullable();

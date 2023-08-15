@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('specialist_id')->nullable(false);
             $table->foreign('specialist_id')->references('id')->on('specialists')->onDelete('cascade');
-            $table->date('start_date')->nullable(false);
-            $table->date('end_date')->nullable(false);
+            $table->datetime('start_date')->nullable(false);
+            $table->datetime('end_date')->nullable(false);
             $table->timestamps();
         });
     }

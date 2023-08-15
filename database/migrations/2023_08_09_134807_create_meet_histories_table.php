@@ -15,12 +15,8 @@ return new class extends Migration
     {
         Schema::create('meet_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable(false);
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('specialist_id')->nullable(false);
-            $table->foreign('specialist_id')->references('id')->on('specialists');
-            $table->unsignedBigInteger('service_id')->nullable(false);
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->unsignedBigInteger('meet_id')->nullable(false);
+            $table->foreign('meet_id')->references('id')->on('meets');
             $table->timestamps();
         });
     }

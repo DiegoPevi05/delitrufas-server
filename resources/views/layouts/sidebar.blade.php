@@ -44,7 +44,49 @@
                           </span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('specialists.index') }}">
+                          <span class="nav-link-title">
+                             Especialistas
+                          </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('specialiststimes.index') }}">
+                          <span class="nav-link-title">
+                             Hojas de Tiempos de Especialistas
+                          </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('meets.index') }}">
+                          <span class="nav-link-title">
+                             Sesiones
+                          </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('meethistories.index') }}">
+                          <span class="nav-link-title">
+                             Sesiones Facturadas
+                          </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('zooms.index') }}">
+                          <span class="nav-link-title">
+                             Actualizar Zoom Credenciales
+                          </span>
+                            </a>
+                        </li>
                     @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('calendars.index') }}">
+                      <span class="nav-link-title">
+                        Calendario 
+                      </span>
+                        </a>
+                    </li>
                     <li class="nav-item mt-auto">
                         <a class="nav-link mt-auto" href="{{ route('home') }}">
                             <img src="/LogoPink.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">

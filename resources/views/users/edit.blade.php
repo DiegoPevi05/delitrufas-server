@@ -72,7 +72,6 @@
                 <label for="role">Role</label>
                 <select class="form-control @error('role') is-invalid @enderror" id="role" name="role">
                     <option class="{{$user->role == "USER" ? 'selected':''}}" value="USER">Usuario</option>
-                    <option class="{{$user->role == "SPECIALIST" ? 'selected':''}}" value="SPECIALIST" selected>Especialista</option>
                     <option class="{{$user->role == "MODERATOR" ? 'selected':''}}" value="MODERATOR">Moderador</option>
                 </select>
                 @error('role')

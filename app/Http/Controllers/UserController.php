@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function searchByName(Request $request)
+    {
+        $name = strtolower($request->input('name')); // Convert input name to lowercase
+
+        $users = User::whereRaw('LOWER(name) like ?', ["%$name%"])
+            ->where('role', 'USER') // Filter by role = 'USER'
+            ->select('id', 'name', 'email')
+            ->limit(5)
+            ->get();
+
+        return response()->json($users);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -65,7 +77,7 @@ class UserController extends Controller
             'name' => 'required|max:25',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
-            'role' => 'required|in:' . User::ROLE_USER . ',' . User::ROLE_MODERATOR . ',' . User::ROLE_SPECIALIST,
+            'role' => 'required|in:' . User::ROLE_USER . ',' . User::ROLE_MODERATOR,
         ], [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El campo nombre no puede tener más de 25 caracteres.',
@@ -88,7 +100,7 @@ class UserController extends Controller
         ]);
 
         // Return a success response or redirect as desired
-        return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('users.index')->with('logSuccess', 'Usuario creado exitosamente.');
     }
 
     /**
@@ -126,7 +138,7 @@ class UserController extends Controller
             'name' => 'required|max:25',
             'email' => 'required|email|unique:users,email,'. $user->id,
             'password' => 'nullable|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
-            'role' => 'required|in:' . User::ROLE_USER . ',' . User::ROLE_MODERATOR . ',' . User::ROLE_SPECIALIST,
+            'role' => 'required|in:' . User::ROLE_USER . ',' . User::ROLE_MODERATOR,
         ], [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El campo nombre no puede tener más de 25 caracteres.',
@@ -150,7 +162,7 @@ class UserController extends Controller
         $user->save();
 
         // Return a success response or redirect as desired
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('users.index')->with('logSuccess', 'Usuario actualizado exitosamente.');
     }
 
     /**
@@ -165,6 +177,6 @@ class UserController extends Controller
         $user->delete();
 
         // Return a success response or redirect as desired
-        return redirect()->route('users.index')->with('success', 'Usuario borrado exitosamente.');
+        return redirect()->route('users.index')->with('logSuccess', 'Usuario borrado exitosamente.');
     }
 }

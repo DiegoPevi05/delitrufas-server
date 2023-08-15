@@ -70,49 +70,5 @@
 
     </form>
     </div>
-
-    <script>
-        const optionsContainer = document.getElementById('options-container');
-        const addOptionButton = document.getElementById('add-option');
-        const removeOptionButton = document.getElementById('remove-option');
-
-        let optionCount = 0;
-
-        function addOption() {
-            optionCount++;
-
-            const optionDiv = document.createElement('div');
-            optionDiv.classList.add('row', 'my-3'); // Add the Bootstrap 'row' class and custom margin class
-            optionDiv.innerHTML = `
-                <div class="col-5">
-                    <label for="options[${optionCount}][price]">Precio:</label>
-                    <input type="number" class="form-control" step="0.1" name="options[${optionCount}][price]" required>
-                </div>
-                <div class="col-5">
-                    <label for="options[${optionCount}][duration]">Duración en minutos:</label>
-                    <input type="number" class="form-control" name="options[${optionCount}][duration]" required>
-                </div>
-            `;
-
-            optionsContainer.appendChild(optionDiv);
-
-            if (optionCount > 0) {
-                removeOptionButton.removeAttribute('disabled'); // Enable the button
-            }
-        }
-
-        function removeOption() {
-            if (optionCount > 0) {
-                optionsContainer.removeChild(optionsContainer.lastChild);
-                optionCount--;
-
-                if (optionCount === 0) {
-                    removeOptionButton.setAttribute('disabled', 'disabled'); // Disable the button
-                }
-            }
-        }
-
-        addOptionButton.addEventListener('click', addOption);
-        removeOptionButton.addEventListener('click', removeOption);
-    </script>
+    @include('config.services')
 @endsection

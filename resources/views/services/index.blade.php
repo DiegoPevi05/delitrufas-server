@@ -55,7 +55,7 @@
                     <td>
                         <ul>
                             @foreach ($service->options as $option)
-                                <li>Precio: {{ $option->price }} | Tiempo min: {{ $option->duration }}</li>
+                                <li>id: {{ $option->id }}: Precio: {{ $option->price }} | Tiempo min: {{ $option->duration }}</li>
                             @endforeach
                         </ul>
                     </td>

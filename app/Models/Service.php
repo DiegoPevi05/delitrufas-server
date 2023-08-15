@@ -17,4 +17,5 @@ class Service extends Model
         'options',
         'is_active',
     ];
+
 }

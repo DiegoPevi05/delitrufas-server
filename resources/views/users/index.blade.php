@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container-fluid main-container">
+    @extends('config.log')
     <!--header-->
     <div class="page-header mb-4">
         <div class="row align-items-center">

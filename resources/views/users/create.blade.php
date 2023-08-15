@@ -71,7 +71,6 @@
             <label for="role">Role</label>
             <select class="form-control @error('role') is-invalid @enderror" id="role" name="role">
                 <option value="USER" selected>Usuario</option>
-                <option value="SPECIALIST">Especialista</option>
                 <option value="MODERATOR">Moderador</option>
             </select>
             @error('role')
