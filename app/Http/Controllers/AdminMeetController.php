@@ -157,6 +157,7 @@ class AdminMeetController extends Controller
         $discounted_price = $response_calculated_amount['discounted_price'];
 
         //GENERATE MEET LINK
+        $response_generate_link = [];
         if(!isset($validatedData['link_meet']) || !$validatedData['link_meet']){
 
             $response_generate_link = $this->meetService->GenerateMeetLink(
@@ -187,7 +188,9 @@ class AdminMeetController extends Controller
             'discounted_price' => $discounted_price,
             'canceled' => $canceled,
             'canceled_reason' => $validatedData['canceled_reason'],
-            'link_meet' => $validatedData['link_meet'],
+            'link_meet' =>  isset($response_generate_link['link_meet']) ? $response_generate_link['link_meet'] : $validatedData['link_meet'],
+            'meeting_id' =>  isset($response_generate_link['meeting_id']) ? $response_generate_link['meeting_id'] : 0,
+            'meeting_passwrord' =>  isset($response_generate_link['meeting_password']) ? $response_generate_link['meeting_password'] : '' ,
             'reference_id' => $validatedData['reference_id'],
             'payment_status' => $validatedData['payment_status'],
             'payment_id' => $validatedData['payment_id'],
@@ -339,6 +342,7 @@ class AdminMeetController extends Controller
         $discounted_price = $response_calculated_amount['discounted_price'];
 
         //GENERATE MEET LINK
+        $response_generate_link = [];
         if(!isset($validatedData['link_meet']) || !$validatedData['link_meet']){
 
             $response_generate_link = $this->meetService->GenerateMeetLink(
@@ -372,7 +376,9 @@ class AdminMeetController extends Controller
             'discounted_price' => $discounted_price,
             'canceled' => $canceled,
             'canceled_reason' => $validatedData['canceled_reason'],
-            'link_meet' => $validatedData['link_meet'],
+            'link_meet' =>  isset($response_generate_link['link_meet']) ? $response_generate_link['link_meet'] : $validatedData['link_meet'],
+            'meeting_id' =>  isset($response_generate_link['meeting_id']) ? $response_generate_link['meeting_id'] : 0,
+            'meeting_passwrord' =>  isset($response_generate_link['meeting_password']) ? $response_generate_link['meeting_password'] : '' ,
             'reference_id' => $validatedData['reference_id'],
             'payment_status' => $validatedData['payment_status'],
             'payment_id' => $validatedData['payment_id'],

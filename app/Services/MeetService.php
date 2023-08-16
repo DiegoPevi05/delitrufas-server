@@ -4,9 +4,14 @@ namespace App\Services;
 use App\Models\DiscountCode;
 use App\Models\SpecialistTimes;
 use App\Models\Meet;
+use App\Models\User;
+use App\Models\Specialist;
 use App\Models\Service;
 use App\Models\TokenZoom;
 use Carbon\Carbon;
+use GuzzleHttp\Client as GuzzleHttpClient;
+use Illuminate\Support\Facades\Log;
+
 
 class MeetService
 {
@@ -18,7 +23,7 @@ class MeetService
                 'status' => true,
                 'message' => 'Precio no calculado.',
                 'price' => $price,
-                'dicount' => $discount,
+                'dicount' => $discount > 0 ? $discount : 0,
                 'discounted_price' => $price - ($price * $discount /100),
             ];
         }
@@ -184,26 +189,40 @@ class MeetService
         }
 
         $arrToken = json_decode($tokenDb->access_token,true); 
-        $accessToken = $arrToken->access_token; 
+        $accessToken = $arrToken['access_token']; 
         $randomPassword = strval(rand(100000, 999999));
-        $formattedDateMeet = date("Y-m-d\TH:i:s", strtotime($date_meet));
-        try{
+        $formattedDateMeet = date("Y-m-d\TH:i:s\Z", strtotime($date_meet));
 
+        try{
+            $client = new GuzzleHttpClient(['base_uri' => 'https://api.zoom.us']);
             $response = $client->request('POST', '/v2/users/me/meetings', [
                 "headers" => [
-                    "Authorization" => "Bearer $accessToken"
+                    "Authorization" => "Bearer " . $accessToken,
+                    "Content-Type" => "application/json"
                 ],
                 'json' => [
-                    "topic" => "Nuna inivitación a reunión",
+                    "topic" => "Nuna inivitacion a reunion",
                     "type" => 2,
                     "start_time" => $formattedDateMeet,
-                    "duration" => $minutes > 40 ? "40" : strval($minutes), // 30 mins
-                    "password" => $randomPassword,
+                    "duration" => $minutes > 40 ? 40 : $minutes,
+                    "password" => "1234",
+                    "timezone" => "America/Lima",
                     "settings" => [
-                        "alternative_hosts" => [
-                            $user->email,
-                            $user_specialist->email,
-                        ]
+                        "jbh_time" => 0,
+                        "join_before_host" => true,
+                        "contact_email" =>  "diegopevi05@gmail.com",
+                        "meeting_authentication" => false,
+                        "meeting_invitees" => [
+                            [
+                                "email" => $user->email,
+                            ],
+                            [
+                                "email" => $user_specialist->email,
+                            ]
+                        ],
+                        "participant_video" =>  true,
+                        "show_share_button" =>  true,
+                        "waiting_room" => false
                     ]
                 ],
             ]);
@@ -212,6 +231,7 @@ class MeetService
 
             return [
                 'status' => true,
+                'id_meeting' => $data->id,
                 'link_meet' => $data->join_url,
                 'password_meeting' => $data->password,
                 'message' => ''
@@ -219,7 +239,7 @@ class MeetService
 
         }catch(\Exception $e){
             if( 401 == $e->getCode()) {
-                $refresh_token = $arrToken->refresh_token;
+                $refresh_token = $arrToken['refresh_token'];
       
                 $client = new GuzzleHttpClient(['base_uri' => 'https://zoom.us']);
                 $response = $client->request('POST', '/oauth/token', [
@@ -236,19 +256,21 @@ class MeetService
                     'access_token' => json_encode($response->getBody())
                 ]);
       
-                GenerateMeetLink($user_id, $specialist_id, $date_meet,$minutes);
+                $this->GenerateMeetLink($user_id, $specialist_id, $date_meet,$minutes);
             } else {
 
                 return [
                     'status' => false,
+                    'id_meeting' => 0,
                     'link_meet' => '',
                     'password_meeting' => '',
                     'message' => $e->getMessage()
                 ];
             }
-
+            
             return [
                 'status' => false,
+                'id_meeting' => 0,
                 'link_meet' => '',
                 'password_meeting' => '',
                 'message' => $e->getMessage()

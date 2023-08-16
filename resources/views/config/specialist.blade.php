@@ -374,7 +374,7 @@
         }
 
         try {
-            const response = await fetch(`/search-users?name=${encodeURIComponent(name)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-users?name=${encodeURIComponent(name)}`);
             const data = await response.json();
             userList.innerHTML = '';
             if (data.length === 0) {
@@ -464,7 +464,7 @@
         }
 
         try {
-            const response = await fetch(`/search-services?name=${encodeURIComponent(serviceName)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-services?name=${encodeURIComponent(serviceName)}`);
             console.log(response)
             const services = await response.json();
             serviceList.innerHTML = '';

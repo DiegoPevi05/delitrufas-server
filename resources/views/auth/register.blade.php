@@ -3,7 +3,7 @@
 <div class="container container-tight py-4">
     <div class="text-center mb-4">
         <a href="." class="navbar-brand navbar-brand-autodark">
-            <img src="/LogoPink.jpeg" style="width: 100px; height: 100px; border-radius: 50%;" alt="Tabler" class="navbar-brand-image">
+            <img src="{{env('BACKEND_URL_IMAGE')}}/LogoPink.jpeg" style="width: 100px; height: 100px; border-radius: 50%;" alt="Tabler" class="navbar-brand-image">
         </a>
     </div>
     <form class="card card-md" action="{{ route('register') }}" method="post" autocomplete="off" novalidate="">

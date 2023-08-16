@@ -33,6 +33,8 @@ return new class extends Migration
             $table->boolean('canceled')->nullable();
             $table->text('canceled_reason')->nullable();
             $table->text('link_meet')->nullable();
+            $table->unsignedBigInteger('meeting_id')->nullable();
+            $table->text('meeting_password')->nullable();
             $table->string('reference_id')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('payment_id')->nullable();

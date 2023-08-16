@@ -7,7 +7,7 @@
             </button>
             <h1 class="navbar-brand navbar-brand-autodark">
                 <a href="#">
-                    <img src="/LogoPink.jpeg" style="width: 50px; height: 50px; border-radius: 50%;" alt="Tabler" class="navbar-brand-image">
+                    <img src="{{env('BACKEND_URL_IMAGE')}}/LogoPink.jpeg" style="width: 50px; height: 50px; border-radius: 50%;" alt="Tabler" class="navbar-brand-image">
                 </a>
             </h1>
             <div class="collapse navbar-collapse" id="sidebar-menu">
@@ -89,7 +89,7 @@
                     </li>
                     <li class="nav-item mt-auto">
                         <a class="nav-link mt-auto" href="{{ route('home') }}">
-                            <img src="/LogoPink.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <img src="{{env('BACKEND_URL_IMAGE')}}/LogoPink.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                     </li>

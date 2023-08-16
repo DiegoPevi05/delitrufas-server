@@ -50,7 +50,7 @@
         }
 
         try {
-            const response = await fetch(`/search-specialists?name=${encodeURIComponent(name)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-specialists?name=${encodeURIComponent(name)}`);
             const data = await response.json();
             specialistList.innerHTML = '';
             if (data.length === 0) {

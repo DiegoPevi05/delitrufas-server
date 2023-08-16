@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('token_zooms', function (Blueprint $table) {
             $table->id();
-            $table->string('access_token');
+            $table->string('access_token',2500);
             $table->timestamps();
         });
     }

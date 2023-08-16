@@ -49,7 +49,7 @@
         }
 
         try {
-            const response = await fetch(`/search-users?name=${encodeURIComponent(name)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-users?name=${encodeURIComponent(name)}`);
             const data = await response.json();
             userList.innerHTML = '';
             if (data.length === 0) {
@@ -108,7 +108,7 @@
         }
 
         try {
-            const response = await fetch(`/search-specialists?name=${encodeURIComponent(name)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-specialists?name=${encodeURIComponent(name)}`);
             const data = await response.json();
             specialistList.innerHTML = '';
             if (data.length === 0) {
@@ -161,7 +161,7 @@
     async function fetchServices(specialist_id) {
 
         try {
-            const response = await fetch(`/search-services-specialist?specialist_id=${encodeURIComponent(specialist_id)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-services-specialist?specialist_id=${encodeURIComponent(specialist_id)}`);
             const services = await response.json();
             serviceList.innerHTML = '';
             optionList.innerHTML = '';
@@ -257,7 +257,7 @@
         }
 
         try {
-            const response = await fetch(`/search-discounts?name=${encodeURIComponent(name)}`);
+            const response = await fetch(`{{env('BACKEND_URL')}}/search-discounts?name=${encodeURIComponent(name)}`);
             const data = await response.json();
             discountList.innerHTML = '';
             if (data.length === 0) {
